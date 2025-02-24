@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Property Estimation | Property Hub</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 600px;
+            margin: 50px auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+        label {
+            font-weight: bold;
+        }
+        select {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        input{
+            width: 96%;
+            padding: 10px;
+            margin-top: 5px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #218838;
+        }
+        .result {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Estimate Your Property Value</h2>
+        <form id="estimationForm">
+            <label for="propertyType">Property Type:</label>
+            <select id="propertyType" required>
+                <option selected>Select</option>
+                <option value="House">House</option>
+                <option value="Villa">Villa</option>
+                <option value="Exceptional Property">Exceptional Property</option>
+                <option value="Farmhouse">Farmhouse</option>
+                <option value="Apartment Block">Apartment Block</option>
+                <option value="Town House">Town House</option>
+            </select>
+
+            <label for="area">Property Area (sq. ft.):</label>
+            <input type="number" id="area" required>
+
+            <label for="location">Location:</label>
+            <select id="location" required>
+                <option selected>Select</option>
+                <option value="Ahmedabad">Ahmedabad</option>
+                <option value="Bangalore">Bangalore</option>
+                <option value="Chennai">Chennai</option>
+                <option value="Gurgaon">Gurgaon</option>
+                <option value="Hyderabad">Hyderabad</option>
+                <option value="Mumbai">Mumbai</option>
+                <option value="Nagpur">Nagpur</option>
+                <option value="Navi Mumbai">Navi Mumbai</option>
+                <option value="Thane">Thane</option>
+            </select>
+
+            <label for="age">Property Age (years):</label>
+            <input type="number" id="age" required>
+
+            <label for="condition">Condition:</label>
+            <select id="condition" required>
+                <option selected>Select</option>
+                <option value="New">New</option>
+                <option value="Good">Good</option>
+                <option value="Old">Old</option>
+                <option value="Needs Repair">Needs Repair</option>
+            </select>
+
+            <button type="button" onclick="estimateValue()">Estimate Value</button>
+        </form>
+        <div class="result" id="result"></div>
+    </div>
+
+    <script>
+        function estimateValue() {
+            let area = document.getElementById('area').value;
+            let age = document.getElementById('age').value;
+            let condition = document.getElementById('condition').value;
+            
+            if (area && age) {
+                let basePrice = 5000; // Base price per sq. ft. in INR
+                let depreciation = age * 50; // Reducing value per year
+                let conditionFactor = condition === "New" ? 1.2 : condition === "Good" ? 1 : condition === "Old" ? 0.8 : 0.6;
+                
+                let estimatedValue = (area * basePrice - depreciation) * conditionFactor;
+                document.getElementById('result').innerHTML = `Estimated Property Value: ₹${estimatedValue.toLocaleString('en-IN')}`;
+            } else {
+                document.getElementById('result').innerHTML = "Please fill all the fields correctly.";
+            }
+        }
+    </script>
+</body>
+</html>

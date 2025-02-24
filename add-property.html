@@ -1,0 +1,587 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Property</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+
+    <!-- Leaflet.js -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <style>
+        .half-bg {
+            background: linear-gradient(to right, #08ca5f 50%, #00B98E 50%);
+        }
+    </style>
+</head>
+<body class="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#08ca5f] to-[#00B98E]">
+    <div class="bg-white shadow-2xl rounded-lg w-full max-w-4xl p-8">
+        <div class="mb-8">
+            <div class="flex justify-between items-center">
+                <div class="flex-1 text-center">
+                    <div class="w-10 h-10 rounded-full bg-green-500 text-white flex items-center justify-center mx-auto">1</div>
+                    <p class="mt-2">Property Location</p>
+                </div>
+                <div class="flex-1 text-center">
+                    <div class="w-10 h-10 rounded-full bg-gray-300 text-gray-500 flex items-center justify-center mx-auto">2</div>
+                    <p class="mt-2">Property Details</p>
+                </div>
+                <div class="flex-1 text-center">
+                    <div class="w-10 h-10 rounded-full bg-gray-300 text-gray-500 flex items-center justify-center mx-auto">3</div>
+                    <p class="mt-2">Property Images</p>
+                </div>
+            </div>
+            <div class="h-1 bg-gray-300 mt-4">
+                <div class="h-1 bg-green-500 w-1/3"></div>
+            </div>
+        </div>
+
+        <!-- Step 1 -->
+<div id="step-1" class="step">
+    <div class="grid grid-cols-2 gap-4">
+        <!-- Left Side: Form -->
+        <div>
+            <label for="state" class="block mb-2">State:</label>
+            <select id="state" class="w-full p-3 border rounded">
+                <option value="" selected>Select State</option>
+                <option value="Delhi">Delhi</option>
+                <option value="Gujarat">Gujarat</option>
+                <option value="Karnataka">Karnataka</option>
+                <option value="Maharashtra">Maharashtra</option>
+                <option value="TamilNadu">TamilNadu</option>
+                <option value="UttarPradesh">UttarPradesh</option>
+                <option value="WestBengal">WestBengal</option>
+            </select>
+
+            <label for="cities" class="block mb-2">City:</label>
+            <select id="cities" class="w-full p-3 border rounded">
+                <option value="" selected>Select City</option>
+            </select>
+
+            <label for="address" class="block mb-2">Address:</label>
+            <input type="text" id="address" placeholder="Enter Address" class="w-full p-3 mb-4 border rounded">
+
+            <label for="pincode" class="block mb-2">Pincode:</label>
+            <input type="text" id="pincode" placeholder="Enter Pincode" class="w-full p-3 mb-4 border rounded">
+
+            <label for="description" class="block mb-2">Description:</label>
+            <textarea id="description" placeholder="Enter your description here..." class="w-full p-3 mb-4 border rounded"></textarea>
+
+            <div class="flex justify-center">
+                <button class="bg-[#08ca5f] text-white py-2 px-6 rounded" onclick="nextStep()">Next</button>
+            </div>
+        </div>
+
+        <!-- Right Side: Map -->
+        <div class="border rounded-lg overflow-hidden">
+            <div id="map" style="height: 100%; width: 100%; min-height: 300px;"></div>
+        </div>
+    </div>
+</div>
+
+        <div id="step-2" class="step hidden">
+                <!-- Row for Bedrooms and Bathrooms -->
+                <div class="grid grid-cols-2 gap-4 mb-4">
+                    <div>
+                        <label for="bedrooms" class="block mb-2 font-medium">No. of Bedrooms:</label>
+                        <select id="bedrooms" class="w-full p-3 border rounded">
+                            <option value="0" selected>0</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                            <option value="7">7</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="bathrooms" class="block mb-2 font-medium">No. of Bathrooms:</label>
+                        <select id="bathrooms" class="w-full p-3 border rounded">
+                            <option value="0" selected>0</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                            <option value="7">7</option>
+                        </select>
+                    </div>
+                </div>
+            
+                <!-- Row for Parkings and Balconies -->
+                <div class="grid grid-cols-2 gap-4 mb-4">
+                    <div>
+                        <label for="parkings" class="block mb-2 font-medium">No. of Parkings:</label>
+                        <select id="parkings" class="w-full p-3 border rounded">
+                            <option value="0" selected>0</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                            <option value="7">7</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="Balconies" class="block mb-2 font-medium">No. of Balconies:</label>
+                        <select id="Balconies" class="w-full p-3 border rounded">
+                            <option value="0" selected>0</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                            <option value="7">7</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Row for Furnishing and Property Type -->
+                <div class="grid grid-cols-2 gap-4 mb-4">
+                    <div>
+                        <label for="Furnishing" class="block mb-2 font-medium">Furnishing:</label>
+                        <select id="Furnishing" class="w-full p-3 border rounded">
+                            <option selected>Select Furnishing</option>
+                            <option value="Furnished">Furnished</option>
+                            <option value="Semi-Furnished">Semi-Furnished</option>
+                            <option value="UnFurnished">UnFurnished</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="Property Type" class="block mb-2 font-medium">Property Type:</label>
+                        <select id="Property Type" class="w-full p-3 border rounded">
+                            <option selected>Select Property Type</option>
+                            <option value="House">House</option>
+                            <option value="Villa">Villa</option>
+                            <option value="Exceptional Property">Exceptional Property</option>
+                            <option value="Farmhouse">Farmhouse</option>
+                            <option value="Apartment Block">Apartment Block</option>
+                            <option value="Town House">Town House</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Row for Facing and Budget -->
+                <div class="grid grid-cols-2 gap-4 mb-4">
+                    <div>
+                        <label for="Facing" class="block mb-2 font-medium">Facing:</label>
+                        <select id="Facing" class="w-full p-3 border rounded">
+                            <option selected>Select Facing</option>
+                            <option value="North">North</option>
+                            <option value="South">South</option>
+                            <option value="East">East</option>
+                            <option value="West">West</option>
+                            <option value="North-East">North-East</option>
+                            <option value="North-West">North-West</option>
+                            <option value="South-East">South-East</option>
+                            <option value="South-West">South-West</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="budget" class="block mb-2 font-medium">Budget:</label>
+                        <input
+                            type="number"
+                            id="budget"
+                            placeholder="Enter budget"
+                            class="w-full p-3 border rounded"
+                        >
+                    </div>
+                </div>
+                
+                <!-- Row for Square Feet and Floor -->
+                <div class="grid grid-cols-2 gap-4 mb-4">
+                    <div>
+                        <label for="square-feet" class="block mb-2 font-medium">Square Feet:</label>
+                        <input
+                            type="number"
+                            id="square-feet"
+                            placeholder="Enter square feet"
+                            class="w-full p-3 border rounded"
+                        >
+                    </div>
+                    <div>
+                        <label for="floor" class="block mb-2">Floor:</label>
+                        <input type="text" placeholder="Floor" class="w-full p-3 mb-4 border rounded">
+                    </div>
+                </div>
+
+            <div class="flex justify-center space-x-4">
+                <button class="bg-gray-500 text-white py-2 px-6 rounded" onclick="prevStep()">Back</button>
+                <button class="bg-[#08ca5f] text-white py-2 px-6 rounded" onclick="nextStep()">Next</button>
+            </div>
+        </div>
+
+        <div id="step-3" class="step hidden">
+            <div class="upload-container">
+                <div class="upload-area" id="upload-area">
+
+                    <i class="fas fa-cloud-upload-alt text-4xl text-gray-400"></i>
+                    <p>Upload Image</p>
+                    <input type="file" id="file-input" accept="image/*">
+                </div>
+            </div>
+            <div class="flex justify-center space-x-4" style="margin-top: 50px;"></style>
+                <button class="bg-gray-500 text-white py-2 px-6 rounded" onclick="prevStep()">Back</button>
+                <button class="bg-[#08ca5f] text-white py-2 px-6 rounded" onclick="submitData()">Submit</button>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            background-color: #f9f9f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            box-sizing: border-box;
+        }
+
+        .upload-container {
+            position: relative;
+            margin-bottom: 50px; /* Adjust this for imaginary bottom spacing */
+        }
+
+        .upload-area {
+            width: 400px;
+            height: 200px;
+            border: 2px dashed #ccc;
+            border-radius: 8px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            text-align: center;
+            background-color: #fff;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+            margin-left: 220px;
+        }
+
+        .upload-area:hover {
+            background-color: #f0f0f0;
+        }
+
+        .upload-area img {
+            width: 40px;
+            height: 40px;
+            opacity: 0.7;
+        }
+
+        .upload-area p {
+            margin: 10px 0 0;
+            font-size: 16px;
+            color: #555;
+        }
+
+        #file-input {
+            display: none;
+        }
+    </style>
+
+<script>
+    // Initialize Map
+    const map = L.map('map').setView([20.5937, 78.9629], 5); // Default to India
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; OpenStreetMap contributors'
+    }).addTo(map);
+
+    let marker;
+
+    // State & City Mapping
+    const stateCityMap = {
+        Delhi: { cities: ["New Delhi"], coords: [28.6139, 77.2090] },
+        Gujarat: { cities: ["Ahmedabad", "Rajkot", "Surat", "Vadodara"], coords: [22.2587, 71.1924] },
+        Karnataka: { cities: ["Bengaluru", "Hubballi", "Mangaluru", "Mysuru"], coords: [15.3173, 75.7139] },
+        Maharashtra: { cities: ["Mumbai", "Pune", "Nagpur", "Nashik", "Thane"], coords: [19.7515, 75.7139] },
+        TamilNadu: { cities: ["Chennai", "Coimbatore", "Madurai", "Tiruchirappalli"], coords: [11.1271, 78.6569] },
+        UttarPradesh: { cities: ["Agra", "Kanpur", "Lucknow", "Varanasi"], coords: [26.8467, 80.9462] },
+        WestBengal: { cities: ["Asansol", "Durgapur", "Kolkata", "Siliguri"], coords: [22.9868, 87.8550] },
+    };
+
+    // Populate Cities on State Change
+    document.getElementById("state").addEventListener("change", function () {
+        const state = this.value;
+        const cityDropdown = document.getElementById("cities");
+        cityDropdown.innerHTML = `<option value="" selected>Select City</option>`;
+
+        if (stateCityMap[state]) {
+            stateCityMap[state].cities.forEach((city) => {
+                const option = document.createElement("option");
+                option.value = city;
+                option.textContent = city;
+                cityDropdown.appendChild(option);
+            });
+
+            // Center map on selected state
+            map.setView(stateCityMap[state].coords, 7);
+        }
+
+        updateMap(); // Update map when state changes
+    });
+
+    // Update Map Marker on City Selection
+    document.getElementById("cities").addEventListener("change", updateMap);
+
+    // Listen for changes in Address and Pincode fields
+    document.getElementById("address").addEventListener("blur", updateMap);
+    document.getElementById("pincode").addEventListener("blur", updateMap);
+
+    // Function to Update Map Based on State, City, Address, and Pincode
+    function updateMap() {
+        const state = document.getElementById("state").value;
+        const city = document.getElementById("cities").value;
+        const address = document.getElementById("address").value;
+        const pincode = document.getElementById("pincode").value;
+
+        if (!address || !pincode) return; // Only update map if address and pincode are provided
+
+        const query = `${address}, ${city}, ${state}, ${pincode}, India`;
+        console.log("Searching for location:", query); // Debugging
+
+        // Attempt to search for the full address first
+        fetchLocation(query)
+            .then(data => {
+                if (data) {
+                    displayLocation(data, address, city, state, pincode);
+                } else {
+                    console.log("⚠️ Full address not found, trying partial address...");
+                    // Attempt search without pincode, using just the address and city
+                    const partialQuery = `${address}, ${city}, ${state}, India`;
+                    fetchLocation(partialQuery)
+                        .then(data => {
+                            if (data) {
+                                displayLocation(data, address, city, state);
+                            } else {
+                                console.log("⚠️ Partial address not found, trying city search...");
+                                // Attempt search using just city and state
+                                const cityQuery = `${city}, ${state}, India`;
+                                fetchLocation(cityQuery)
+                                    .then(data => {
+                                        if (data) {
+                                            displayLocation(data, city, state);
+                                        } else {
+                                            console.log("⚠️ Could not find the location even at the city level.");
+                                        }
+                                    });
+                            }
+                        });
+                }
+            })
+            .catch(error => {
+                console.error("Error fetching location:", error);
+                alert("⚠️ Error retrieving location. Please check your network or try again.");
+            });
+    }
+
+    // Function to fetch location data
+    function fetchLocation(query) {
+        return fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}`)
+            .then(response => response.json())
+            .then(data => data.length > 0 ? data[0] : null);
+    }
+
+    // Function to display the location on the map
+    function displayLocation(data, address, city, state, pincode) {
+        const coords = [parseFloat(data.lat), parseFloat(data.lon)];
+
+        // Remove old marker if exists
+        if (marker) {
+            map.removeLayer(marker);
+        }
+
+        // Add new marker
+        marker = L.marker(coords).addTo(map)
+            .bindPopup(`<b>${address}, ${city}, ${state}, ${pincode}</b>`)
+            .openPopup();
+
+        // Center the map on the new location
+        map.setView(coords, 15);
+    }
+</script>
+
+
+    <script>
+        let currentStep = 1;
+
+        function showStep(step) {
+            document.querySelectorAll('.step').forEach((el, index) => {
+                el.classList.add('hidden');
+                if (index + 1 === step) {
+                    el.classList.remove('hidden');
+                }
+            });
+
+            document.querySelectorAll('.flex-1 .w-10').forEach((el, index) => {
+                if (index + 1 < step) {
+                    el.classList.add('bg-green-500', 'text-white');
+                    el.classList.remove('bg-gray-300', 'text-gray-500');
+                } else if (index + 1 === step) {
+                    el.classList.add('bg-green-500', 'text-white');
+                    el.classList.remove('bg-gray-300', 'text-gray-500');
+                } else {
+                    el.classList.add('bg-gray-300', 'text-gray-500');
+                    el.classList.remove('bg-green-500', 'text-white');
+                }
+            });
+
+            document.querySelector('.h-1.bg-green-500').style.width = `${(step - 1) / 2 * 100}%`;
+        }
+
+        function nextStep() {
+            if (currentStep < 3) {
+                currentStep++;
+                showStep(currentStep);
+            }
+        }
+
+        function prevStep() {
+            if (currentStep > 1) {
+                currentStep--;
+                showStep(currentStep);
+            }
+        }
+
+        showStep(currentStep);
+
+        function goHome() {
+            window.location.href = 'index.html';
+        }
+        const uploadArea = document.getElementById('upload-area');
+        const fileInput = document.getElementById('file-input');
+
+        // Highlight drag area when a file is dragged over
+        uploadArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadArea.style.backgroundColor = '#f0f0f0';
+        });
+
+        // Remove highlight when the file is dragged out
+        uploadArea.addEventListener('dragleave', () => {
+            uploadArea.style.backgroundColor = '#fff';
+        });
+
+        // Handle file drop
+        uploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadArea.style.backgroundColor = '#fff';
+            const files = e.dataTransfer.files;
+
+            if (files.length > 0) {
+                handleFile(files[0]);
+            }
+        });
+
+        // Open file selector on click
+        uploadArea.addEventListener('click', () => {
+            fileInput.click();
+        });
+
+        // Handle file selection from input
+        fileInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                handleFile(file);
+            }
+        });
+
+        // Handle file upload (example function)
+        function handleFile(file) {
+            if (!file.type.startsWith('image/')) {
+                alert('Please upload an image file.');
+                return;
+            }
+
+            alert(`File "${file.name}" uploaded successfully!`);
+        }
+
+    function submitData() {
+    const formData = new FormData();
+    const fileInput = document.getElementById('file-input').files[0];
+
+    if (!fileInput) {
+        alert("Please select an image.");
+        return;
+    }
+
+    formData.append('image', fileInput);
+    formData.append('description', document.getElementById('description').value);
+    formData.append('budget', document.getElementById('budget').value);
+    formData.append('state', document.getElementById('state').value);
+    formData.append('city', document.getElementById('cities').value);
+    formData.append('squareFeet', document.getElementById('square-feet').value);
+    formData.append('floor', document.querySelector('input[placeholder="Floor"]').value);
+    formData.append('furnishing', document.getElementById('Furnishing').value);
+    formData.append('address', document.querySelector('input[placeholder="Address"]').value);
+    formData.append('bedrooms', document.getElementById('bedrooms').value);
+    formData.append('bathrooms', document.getElementById('bathrooms').value);
+    formData.append('parkings', document.getElementById('parkings').value);
+    formData.append('balconies', document.getElementById('Balconies').value);
+    formData.append('facing', document.getElementById('Facing').value);
+    formData.append('propertyType', document.getElementById('Property Type').value);
+
+    // Check for missing required fields before submission
+    const description = document.getElementById('description').value;
+    const budget = document.getElementById('budget').value;
+    const state = document.getElementById('state').value;
+    const city = document.getElementById('cities').value;
+    const squareFeet = document.getElementById('square-feet').value;
+    const floor = document.querySelector('input[placeholder="Floor"]').value;
+    const furnishing = document.getElementById('Furnishing').value;
+    const address = document.querySelector('input[placeholder="Address"]').value;
+    const bedrooms = document.getElementById('bedrooms').value;
+    const bathrooms = document.getElementById('bathrooms').value;
+    const parkings = document.getElementById('parkings').value;
+    const balconies = document.getElementById('Balconies').value;
+    const facing = document.getElementById('Facing').value;
+    const propertyType = document.getElementById('Property Type').value;
+
+    if (
+        !description || 
+        isNaN(budget) || 
+        !state || 
+        !city || 
+        isNaN(squareFeet) || 
+        !floor || 
+        !furnishing || 
+        !address || 
+        isNaN(bedrooms) || 
+        isNaN(bathrooms) || 
+        isNaN(parkings) || 
+        isNaN(balconies) || 
+        !facing || 
+        !propertyType
+    ) {
+        alert("Please fill in all required fields.");
+        return;
+    }
+
+    fetch('http://localhost:3019/add-property', {
+        method: 'POST',
+        body: formData, // Send formData directly
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.error) {
+            throw new Error(data.error);
+        }
+        alert("Property added successfully!");
+        window.location.href = 'index.html';
+    })
+    .catch(error => {
+        console.error("Error:", error);
+        alert("Failed to add property.");
+    });
+}
+
+    </script>
+</body>
+</html>

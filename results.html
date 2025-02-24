@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Results</title>
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Template Stylesheet -->
+    <link href="css/style.css" rel="stylesheet">
+</head>
+<body>
+
+    <div class="container">
+        <h2>Search Results</h2>
+        <div id="resultsContainer" class="row">
+            <!-- Search results will be displayed here -->
+        </div>
+        <a href="index.html" class="btn">Go Back</a>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", async function() {
+    const params = new URLSearchParams(window.location.search);
+    const budget = params.get("budget");
+    const propertyType = params.get("propertyType");
+    const city = params.get("city");
+
+    let queryParams = new URLSearchParams();
+    if (budget) queryParams.append("budget", budget);
+    if (propertyType) queryParams.append("propertyType", propertyType);
+    if (city) queryParams.append("city", city);
+
+    try {
+        console.log("Fetching:", `http://localhost:3019/store_data/properties?${queryParams.toString()}`);
+        
+        const response = await fetch(`http://localhost:3019/store_data/properties?${queryParams.toString()}`);
+        const data = await response.json();
+        
+        console.log("Fetched Data:", data);
+        displayResults(data);
+    } catch (error) {
+        console.error("Error fetching properties:", error);
+        document.getElementById("resultsContainer").innerHTML = "<p>Error loading results.</p>";
+    }
+});
+
+function displayResults(data) {
+    const container = document.getElementById("resultsContainer");
+    container.innerHTML = "";
+
+    if (data.length === 0) {
+        container.innerHTML = "<p>No properties found.</p>";
+        return;
+    }
+
+    data.forEach(item => {
+        container.innerHTML += `<div class="col-lg-4 col-md-4 col-sm-12 wow fadeInUp" data-wow-delay="0.1s">
+                                <div class="property-item rounded overflow-hidden">
+                                    <div class="position-relative overflow-hidden">
+                                        <img class="img-fluid" src="img/1.jpg" alt="Urban House"></a>
+                                        <div class="bg-primary rounded text-white position-absolute start-0 top-0 m-4 py-1 px-3">For Sell</div>
+                                        <div class="bg-white rounded-top text-primary position-absolute start-0 bottom-0 mx-4 pt-1 px-3">${item.propertyType}</div>
+                                        <!-- Heart Icon with toggle functionality -->
+                                        <div class="position-absolute top-0 end-0 custom-margin">
+                                            <i class="fas fa-heart custom-heart cursor-pointer" onclick="toggleHeart(this)"></i>
+                                        </div>
+                                    </div>
+                                    <div class="p-4 pb-0">
+                                        <p class="text-primary font-semibold mb-1" style="font-weight: bold;">${item.city}</p>
+                                        <h5 class="text-dark font-bold mb-3">Luxury Villa Paradise</h5>
+                                        <div class="d-flex align-items-center justify-content-between text-gray-600 mb-3">
+                                            <small class="d-flex align-items-center"><i class="fa fa-bed text-black me-2"></i>2</small>
+                                            <small class="d-flex align-items-center"><i class="fa fa-bath text-black me-2"></i>2</small>
+                                            <small class="d-flex align-items-center"><i class="fa fa-car text-black me-2"></i>1</small>
+                                            <small class="d-flex align-items-center"><i class="fa fa-ruler-combined text-black me-2"></i>400</small>
+                                        </div>
+                                        <p class="text-gray-500 text-sm mb-1">
+                                            This villa is a stunning masterpiece of luxury and art. Adorned with two helipads for convenient aerial...
+                                        </p>
+                                    </div>
+                                    <div class="p-4 d-flex justify-content-between align-items-center">
+                                        <p class="text-primary h5 mb-0">₹${item.budget.toLocaleString()}</p>
+                                        <a href="Details of all houses/1.html">
+                                            <button class="btn px-4 py-2 rounded-lg" style="background-color: #00B98E; color: white;">
+                                                View Details
+                                            </button>
+                                        </a>                                        
+                                    </div>
+                                </div>
+                            </div>`;
+        // const card = document.createElement("div");
+        // card.classList.add("property-card");
+        // card.innerHTML = `
+        //     <h3>${item.propertyType}</h3>
+        //     <p><strong>City:</strong> ${item.city}</p>
+        //     <p><strong>Budget:</strong> ₹${item.budget.toLocaleString()}</p>
+        // `;
+        //container.appendChild(card);
+    });
+}
+    </script>
+
+</body>
+</html>
