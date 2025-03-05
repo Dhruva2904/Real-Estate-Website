@@ -1,0 +1,17 @@
+.drag-area {
+  border: 2px dashed #ccc;
+  border-radius: 10px;
+  padding: 20px;
+  text-align: center;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.drag-area.dragover {
+  background-color: #f0f0f0;
+}
+
+.drag-area img {
+  max-width: 100px;
+  margin-top: 10px;
+}
