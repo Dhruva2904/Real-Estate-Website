@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en"> 
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Edit Luxury Villa</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <style>
+        #map {
+            height: 300px;
+            width: 100%;
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <div class="w-full h-screen mx-auto p-4 bg-white shadow-md rounded-lg flex flex-col">
+
+        <div class="relative mb-4">
+            <input type="text" id="property-title" class="w-full p-2 text-2xl font-bold border rounded" value="Luxury Villa Paradise" />
+        </div>
+        <div class="flex flex-col md:flex-row">
+            <div class="md:w-2/3 p-4">
+                <label class="block font-semibold">Location:</label>
+                <input type="text" id="property-location" class="w-full p-2 border rounded mb-2" value="San Diego" />
+
+                <label class="block font-semibold">Price:</label>
+                <input type="number" id="property-price" class="w-full p-2 border rounded mb-2" value="2500.00" />
+
+                <label class="block font-semibold">Description:</label>
+                <textarea id="property-description" class="w-full p-2 border rounded mb-2" rows="4">This villa is a stunning masterpiece of luxury and art...</textarea>
+
+                <label class="block font-semibold">Address:</label>
+                <input type="text" id="property-address" class="w-full p-2 border rounded mb-2" value="Street 10 San Diego US" />
+                
+                <button id="save-button" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">Save Changes</button>
+            </div>
+            <div class="md:w-1/3 p-4">
+                <div id="map" class="rounded-lg"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        var map = L.map('map').setView([32.7157, -117.1611], 10);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; OpenStreetMap contributors'
+        }).addTo(map);
+        L.marker([32.7157, -117.1611]).addTo(map)
+            .bindPopup('Edit Location')
+            .openPopup();
+    
+        document.getElementById('save-button').addEventListener('click', function() {
+            alert('Changes saved successfully!');
+        });
+    </script>
+</body>
+</html>
