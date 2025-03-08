@@ -21,6 +21,20 @@ This project is a fully functional real estate website that allows users to brow
 ## Installation & Setup
 Ensure you have the necessary dependencies installed. Follow these steps:
 
+### Frontend Setup
+1. Navigate to the frontend folder:
+   ```bash
+   cd ../frontend
+   ```
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+3. Start the frontend server:
+   ```bash
+   npm start
+   ```
+
 ### Backend Setup
 1. Clone the repository:
    ```bash
@@ -37,20 +51,6 @@ Ensure you have the necessary dependencies installed. Follow these steps:
    DATABASE_URL=your_database_url
    ```
 4. Start the backend server:
-   ```bash
-   npm start
-   ```
-
-### Frontend Setup
-1. Navigate to the frontend folder:
-   ```bash
-   cd ../frontend
-   ```
-2. Install dependencies:
-   ```bash
-   npm install
-   ```
-3. Start the frontend server:
    ```bash
    npm start
    ```
