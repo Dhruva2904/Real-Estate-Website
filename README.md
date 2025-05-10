@@ -76,5 +76,5 @@ http://localhost:3019
 This will load the homepage where users can start browsing real estate listings.
 
 ---
-Developed by **Nayak Dhruvi .J.**
+Developed by **Pratham Modi**
 
